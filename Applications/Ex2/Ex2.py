@@ -39,4 +39,4 @@ def define_probability(n, k):
     return stay_win / k, switch_win / k
 
 
-print(define_probability(10, 10000))
+print(define_probability(100, 100000))

@@ -83,11 +83,10 @@ class NashApp:
         result_window = tk.Toplevel(self.root)
         result_window.title("Result")
 
-        tk.Label(result_window, text="Player 1 Payoffs:").pack()
-        tk.Label(result_window, text=str(p1)).pack()
-
-        tk.Label(result_window, text="Player 2 Payoffs:").pack()
-        tk.Label(result_window, text=str(p2)).pack()
+        tk.Label(result_window, text="Combined Payoff Matrix (Player 1, Player 2):").pack()
+        for i in range(m):
+            row_text = "  ".join([f"({p1[i][j]},{p2[i][j]})" for j in range(n)])
+            tk.Label(result_window, text=row_text).pack()
 
         tk.Label(result_window, text="Pure Nash Equilibria:").pack()
         if NE:
@@ -95,6 +94,7 @@ class NashApp:
             tk.Label(result_window, text=formatted).pack()
         else:
             tk.Label(result_window, text="No Pure Nash Equilibria found.").pack()
+
 
 
 if __name__ == "__main__":

@@ -20,47 +20,44 @@ class Game:
         return all_rounds
 
     def backwards_induction(self, rounds):
-        player_1_decisions = []
-        player_2_decisions = []
+        n = len(rounds)
+        optimal_path = [None] * n  
+        final_payoffs = [None] * n  
 
-        reversed_rounds = list(reversed(rounds))
+        last_round = rounds[-1]
+        final_payoffs[-1] = (last_round.payoffs[self.player_1], last_round.payoffs[self.player_2])
+        optimal_path[-1] = 'stop'
 
-        for round in reversed_rounds:
-            payoffs = round.payoffs
-            p1_score = payoffs.get(self.player_1, 0)
-            p2_score = payoffs.get(self.player_2, 0)
+        for i in range(n - 2, -1, -1):
+            current_round = rounds[i]
+            is_p1_turn = (i % 2 == 0)
+            stop_payoff = (current_round.payoffs[self.player_1], current_round.payoffs[self.player_2])
+            continue_payoff = final_payoffs[i + 1]
 
-            player_1_decisions.append((round.round_number, p1_score))
-            player_2_decisions.append((round.round_number, p2_score))
-
-        print("Payoffs per round (backwards):")
-        for i in range(len(player_1_decisions)):
-            print("Round", player_1_decisions[i][0],
-                  "| Player 1:", player_1_decisions[i][1],
-                  "| Player 2:", player_2_decisions[i][1])
-
-        for i in range(len(reversed_rounds)):
-            round_num = player_1_decisions[i][0]
-            p1_val = player_1_decisions[i][1]
-            p2_val = player_2_decisions[i][1]
-
-            is_player_1_turn = (rounds[-1].round_number - round_num) % 2 == 0
-
-            if is_player_1_turn:
-                if p1_val >= p2_val:
-                    print("\nGame stops at round", round_num, "by Player 1")
-                    print("Final Payoffs: Player 1:", p1_val, ", Player 2:", p2_val)
-                    return
+            if is_p1_turn:
+                if stop_payoff[0] >= continue_payoff[0]:
+                    final_payoffs[i] = stop_payoff
+                    optimal_path[i] = 'stop'
+                else:
+                    final_payoffs[i] = continue_payoff
+                    optimal_path[i] = 'continue'
             else:
-                if p2_val >= p1_val:
-                    print("\nGame stops at round", round_num, "by Player 2")
-                    print("Final Payoffs : Player 1:", p1_val, ", Player 2:", p2_val)
-                    return
+                if stop_payoff[1] >= continue_payoff[1]:
+                    final_payoffs[i] = stop_payoff
+                    optimal_path[i] = 'stop'
+                else:
+                    final_payoffs[i] = continue_payoff
+                    optimal_path[i] = 'continue'
 
-        last_p1 = player_1_decisions[-1][1]
-        last_p2 = player_2_decisions[-1][1]
-        print("\nGame reaches the end .")
-        print("Final Payoffs: Player 1:", last_p1, ", Player 2:", last_p2)
+        for i in range(n):
+            if optimal_path[i] == 'stop':
+                stopping_player = self.player_1 if (i % 2 == 0) else self.player_2
+                print(f"\nGame stops at round {i+1} by {stopping_player.player_name}")
+                print(f"Final Payoffs: Player 1: {final_payoffs[i][0]}, Player 2: {final_payoffs[i][1]}")
+                return
+
+        print("\nGame reaches the end.")
+        print(f"Final Payoffs: Player 1: {final_payoffs[-1][0]}, Player 2: {final_payoffs[-1][1]}")
 
 
 class Player:
@@ -88,8 +85,16 @@ class Round:
 
 
 
-number_rounds = 6  
-payoff = [(1, 0), (3, 2), (2, 3), (5, 6), (6, 4), (4, 7)] 
+number_rounds = 6
+payoff = [
+    (5, 0),
+    (6, 1),
+    (7, 2),
+    (8, 3),
+    (6, 0),
+    (4, 1),
+
+]
 
 game = Game()
 first_player = Player('Player 1')
