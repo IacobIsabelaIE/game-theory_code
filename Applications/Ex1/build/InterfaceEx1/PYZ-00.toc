@@ -1,7 +1,8 @@
 ('C:\\Users\\Isa\\Desktop\\MASTER\\Game '
- 'Theory\\Applications\\Ex1\\build\\InterfaceEx1\\PYZ-00.pyz',
+ 'Theory\\game-theory_code\\Applications\\ex1\\build\\InterfaceEx1\\PYZ-00.pyz',
  [('Ex1',
-   'C:\\Users\\Isa\\Desktop\\MASTER\\Game Theory\\Applications\\Ex1\\Ex1.py',
+   'C:\\Users\\Isa\\Desktop\\MASTER\\Game '
+   'Theory\\game-theory_code\\Applications\\ex1\\Ex1.py',
    'PYMODULE'),
   ('_compat_pickle',
    'C:\\Users\\Isa\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\_compat_pickle.py',
